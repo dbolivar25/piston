@@ -272,6 +272,9 @@ fn compress(text: &str) -> (Vec<u8>, usize, Vec<i64>) {
 
 fn decompress(data: &[u8], count: usize, tree: Vec<i64>) -> String {
     let tree = Box::from(tree);
-    let encoded = BitVec::from_bytes(data);
+    let encoded = BitVec::from_bytes(data)
+        .into_iter()
+        .take(count * 8)
+        .collect();
     decode(&encoded, &tree)
 }
