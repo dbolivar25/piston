@@ -72,15 +72,6 @@ impl HuffmanNode {
             HuffmanNode::Internal { frequency, .. } => frequency,
         }
     }
-
-    fn contains(&self, character: char) -> bool {
-        match self {
-            HuffmanNode::Leaf { character: c, .. } => *c == character,
-            HuffmanNode::Internal { left, right, .. } => {
-                left.contains(character) || right.contains(character)
-            }
-        }
-    }
 }
 
 impl PartialEq for HuffmanNode {
@@ -174,7 +165,7 @@ impl Into<Vec<i64>> for Box<HuffmanNode> {
 }
 
 impl From<Vec<i64>> for Box<HuffmanNode> {
-    fn from(mut list: Vec<i64>) -> Self {
+    fn from(list: Vec<i64>) -> Self {
         let mut stack = Vec::new();
         let mut iter = list.into_iter().rev();
 
@@ -209,7 +200,7 @@ fn encode_char(char: char, node: &HuffmanNode) -> BitVec {
     let mut stack = VecDeque::new();
     stack.push_back((node, BitVec::new()));
 
-    while let Some((current, mut path)) = stack.pop_front() {
+    while let Some((current, path)) = stack.pop_front() {
         match current {
             HuffmanNode::Leaf { character, .. } => {
                 if *character == char {
