@@ -2,26 +2,25 @@ syntax = "proto3";
 
 package piston;
 
-message ByteMapping {
-  uint32 byte = 1;
-  repeated bool bits = 2;
+message CompressRequest {
+  bytes data = 1;
 }
-
-message CompressRequest { bytes data = 1; }
 
 message CompressResponse {
   bytes data = 1;
-  repeated ByteMapping byte_mappings = 2;
-  uint32 count = 3;
+  uint32 count = 2;
+  repeated int64 tree = 3;
 }
 
 message DecompressRequest {
   bytes data = 1;
-  repeated ByteMapping byte_mappings = 2;
-  uint32 count = 3;
+  uint32 count = 2;
+  repeated int64 tree = 3;
 }
 
-message DecompressResponse { bytes data = 1; }
+message DecompressResponse {
+  bytes data = 1;
+}
 
 service Piston {
   rpc Compress(CompressRequest) returns (CompressResponse) {}
